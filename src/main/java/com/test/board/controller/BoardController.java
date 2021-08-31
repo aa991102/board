@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,15 +16,15 @@ import com.test.board.model.BoardModel;
 
 @Controller
 public class BoardController {
-	@RequestMapping(value="/board", method=RequestMethod.GET)
-	public String goBoardList(HttpServletRequest request, ModelAndView mv) {
+	@RequestMapping(value = "/board", method = RequestMethod.GET)
+	public String goBoardList() {
 		System.out.println("goBoardList()");
 		return "content/board";
 	}
 	
-	@RequestMapping(value="/getBoardList", method=RequestMethod.POST)
+	@RequestMapping(value = "/getBoardList", method = RequestMethod.POST)
 	@ResponseBody
-	public List<BoardModel> getBoardList(HttpServletRequest request, ModelAndView mv) {
+	public List<BoardModel> getBoardList() {
 		System.out.println("getBoardList()");
 		
 		TemporaryDB db = new TemporaryDB();
@@ -31,13 +32,13 @@ public class BoardController {
 		return db.getBoardList();
 	}
 	
-	@RequestMapping(value="/board", method=RequestMethod.POST)
-	@ResponseBody
-	public List<BoardModel> getBoard(HttpServletRequest request, ModelAndView mv) {
-		System.out.println("getBoardList()");
+	@RequestMapping(value = "/board/{board_no}", method = RequestMethod.GET)
+	public ModelAndView goBoard(@PathVariable("board_no") int board_no, ModelAndView mv) {
+		System.out.println("goBoard() - board_no: "+board_no);
 		
-		TemporaryDB db = new TemporaryDB();
+		mv.addObject("board_no", board_no);
+		mv.setViewName("content/board_detail");
 
-		return db.getBoardList();
+		return mv;
 	}
 }

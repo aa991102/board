@@ -16,6 +16,15 @@ public class BoardModel {
 	
 	public BoardModel(){}
 	
+	public BoardModel(BoardModel board) {
+		this.board_no = board.board_no;
+		this.writer = board.writer;
+		this.title = board.title;
+		this.content = board.content;
+		this.date = board.date;
+		this.hit = board.hit;
+	}
+	
 	public BoardModel(String writer, String password, String title, String content){
 		this.writer = writer;
 		this.password = password;

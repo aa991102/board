@@ -11,21 +11,20 @@
 		<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/jquery.tmpl.js}"></script>
 		<script type="text/javascript">
-			$.ajax({
-			    url: '/getBoardList',
+			/*$.ajax({
+			    url: '/getBoard',
 			    type: 'POST',
 			    success: function(data) {
 			        console.log(data);
-			        $("#template").tmpl(data.reverse()).appendTo("#list");
+			        $("#template").tmpl(data).appendTo("#list");
 			    },
 			    error: function(error) {
 			        console.error(error);
 			    }
-			});
+			});*/
 		</script>
 		<script id="template" type="text/x-jquery-tmpl">
 			<tr>
-				<td>${board_no}</td>
 				<td><a href="./board/${board_no}">${title}</a></td>
 				<td>${writer}</td>
 				<td>${date}</td>
@@ -36,13 +35,8 @@
 	<body>
 		<th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
 		<div layout:fragment="content" class="content">
+			board_detail "${board_no}"
 			<table id="list">
-				<tr>
-					<td>글번호</td>
-					<td>제목</td>
-					<td>작성자</td>
-					<td>작성일</td>
-				</tr>
 			</table>
 		</div>
 		<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>

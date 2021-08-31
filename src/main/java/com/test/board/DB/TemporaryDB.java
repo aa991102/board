@@ -29,14 +29,22 @@ public class TemporaryDB {
 	// method
 	// 게시글 리스트 가져오기(READ-All)
 	public LinkedList<BoardModel> getBoardList(){
-		return boards;
+		LinkedList<BoardModel> copy = new LinkedList<>();
+		
+		for(BoardModel board : boards) {
+			copy.add(new BoardModel(board));
+		}
+		
+		return copy;
 	}
 	
 	// 게시글 번호로 게시글 내용 가져오기(READ-One)
 	public BoardModel getBoard(int board_no) {
+		BoardModel copy;
+		
 		for(BoardModel board : boards) {
 			if(board.getBoard_no() == board_no) {
-				return board;
+				return new BoardModel(board);
 			}
 		}
 		return null; // 일치하는 게시글이 없는 경우

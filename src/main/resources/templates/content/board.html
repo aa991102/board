@@ -11,41 +11,22 @@
 		<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
 		<script type="text/javascript" th:src="@{/js/jquery.tmpl.js}"></script>
 		<script type="text/javascript">
-			const boardjs = {
-				getBoardList: function(){
-					$.ajax({
-					    url: '/getBoardList',
-					    type: 'POST',
-					    success: function(data) {
-					        console.log(data);
-					        $("#listTemplate").tmpl(data.reverse()).appendTo("#list");
-					    },
-					    error: function(error) {
-					        console.error(error);
-					    }
-					});
-				},
-				getBoard: function(){
-					$.ajax({
-					    url: '/getBoard',
-					    type: 'POST',
-					    success: function(data) {
-					        console.log(data);
-					        $("#listTemplate").tmpl(data.reverse()).appendTo("#list");
-					    },
-					    error: function(error) {
-					        console.error(error);
-					    }
-					});
-				}
-			}
-			
-			boardjs.getBoardList();
+			$.ajax({
+			    url: '/getBoardList',
+			    type: 'POST',
+			    success: function(data) {
+			        console.log(data);
+			        $("#template").tmpl(data.reverse()).appendTo("#list");
+			    },
+			    error: function(error) {
+			        console.error(error);
+			    }
+			});
 		</script>
-		<script id="listTemplate" type="text/x-jquery-tmpl">
+		<script id="template" type="text/x-jquery-tmpl">
 			<tr>
 				<td>${board_no}</td>
-				<td>${title}</td>
+				<td><a href="./board/${board_no}">${title}</a></td>
 				<td>${writer}</td>
 				<td>${date}</td>
 			</tr>
