@@ -12,7 +12,6 @@ public class BoardModel {
 	private String title;
 	private String content;
 	private LocalDate date;
-	private int hit;
 	
 	public BoardModel(){}
 	
@@ -22,7 +21,6 @@ public class BoardModel {
 		this.title = board.title;
 		this.content = board.content;
 		this.date = board.date;
-		this.hit = board.hit;
 	}
 	
 	public BoardModel(String writer, String password, String title, String content){
@@ -31,7 +29,6 @@ public class BoardModel {
 		this.title = title;
 		this.content = content;
 		this.date = LocalDate.now();
-		this.hit = 0;
 	}
 	
 	public BoardModel(int board_no, String writer, String password, String title, String content, LocalDate date){
@@ -41,6 +38,5 @@ public class BoardModel {
 		this.title = title;
 		this.content = content;
 		this.date = date;
-		this.hit = 0;
 	}
 }
