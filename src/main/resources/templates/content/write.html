@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:decorate="~{layout/default_layout}">
+	
+	<th:block layout:fragment="head">
+		<title>Board</title>
+		
+		<link rel="stylesheet" th:href="@{/css/board.css}"/>
+		<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/jquery.tmpl.js}"></script>
+	</th:block>
+	
+	<body>
+		<th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
+		
+		<div layout:fragment="content" class="content">
+			<form id="form">
+				<h2>글 작성하기</h2>
+				<table>
+					<tr>
+						<th>제목</th>
+						<td><input type="text" name="title" id="title"></td>
+					</tr>
+					<tr>
+						<th>작성자</th>
+						<td><input type="text" name="writer" id=""></td>
+					</tr>
+					<tr>
+						<th>비밀번호</th>
+						<td><input type="password" name="password" id="password"></td>
+					</tr>
+					<tr>
+						<th>내용</th>
+						<td><textarea name="content" id="content"></textarea></td>
+					</tr>
+				</table>
+				<button type="button" onClick="location.href='/board/list'">취소</button>
+				<input type="button" id="submitBtn" value="글쓰기">
+			</form>
+		</div>
+		
+		<script type="text/javascript">
+			 $("#submitBtn").click(function(){
+				 let data = $("#form").serialize();
+				 
+				 $.ajax({
+				    url: '/board/writeBoard',
+				    type: 'POST',
+				    data: data,
+				    async : false,
+				    success: function(data) {
+				    	//console.log(data);
+				        if(data == 'fail'){
+				        	alert('게시글 작성을 실패했습니다. 잠시후 다시 시도해주세요.')
+				        }
+				    },
+				    error: function(error) {
+				        console.error(error);
+				        alert('에러가 발생했습니다.');
+				    }
+				});
+				
+				location.href="/board/list";
+			 })
+		</script>
+
+		<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
+	</body>
+</html>

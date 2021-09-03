@@ -1,0 +1,21 @@
+body, html {
+	height: 100%;
+}
+.header {
+	height:10%;
+}
+
+.content {
+	height:80%;
+}
+
+.footer {
+	height:10%;
+	background-color: aliceblue;
+	text-align: center;
+}
+
+table {
+	text-align: center;
+}
+

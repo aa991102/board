@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.test.dao.BoardDAO">
+	<select id="selectBoards" resultType="BoardDTO">
+		SELECT  b.BOARD_NO, b.WRITER, b.TITLE, b.CONTENT, b.DATE <!-- b.BOARD_NO, b.WRITER, b.TITLE, b.DATE -->
+		FROM BOARD b
+	</select>
+	
+	<select id="selectBoard" parameterType="Integer" resultType="BoardDTO">
+		SELECT b.BOARD_NO, b.WRITER, b.TITLE, b.CONTENT, b.DATE 
+		FROM BOARD b 
+		WHERE b.BOARD_NO = #{board_no}
+	</select>
+	
+	<select id="selectCountByBoardNoAndPassword" parameterType="BoardDTO" resultType="Integer">
+		SELECT count(*) 
+		FROM BOARD b 
+		WHERE b.BOARD_NO = #{board_no} AND b.PASSWORD = #{password}
+	</select>
+	
+	<insert id="insertBoard" parameterType="BoardDTO">
+		INSERT INTO BOARD (WRITER, PASSWORD, TITLE, CONTENT, DATE)
+		VALUES (#{writer}, #{password}, #{title}, #{content}, now()); 
+	</insert>
+	
+	<update id="updateBoard" parameterType="BoardDTO">
+		UPDATE BOARD b
+		SET b.WRITER = #{writer}, 
+			b.PASSWORD = #{password}, 
+			b.TITLE = #{title}, 
+			b.CONTENT = #{content}
+		WHERE b.BOARD_NO = #{board_no}
+	</update>
+
+	<delete id="deleteBoard" parameterType="Integer">
+		DELETE FROM BOARD b 
+		WHERE b.board_no = #{board_no}
+	</delete>
+
+</mapper>
