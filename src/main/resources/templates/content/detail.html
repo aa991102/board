@@ -12,11 +12,73 @@
 		<script type="text/javascript" th:src="@{/js/jquery.tmpl.js}"></script>
 		<script type="text/javascript">
 			function boardUpdateCheck(){
-				location.href="/boardUpdateCheck/[[${board.board_no}]]";
+				let password = $("#password").val();
+				
+				if(password == ''){
+					alert('비밀번호를 입력해주세요.')
+				}else{
+					let url = '/board/updateBoardCheck?board_no=[[${board_no}]]&password='+password;
+
+					$.ajax({
+					    url: url,
+					    type: 'GET',
+					    success: function(data) {
+					    	if(data == 'success'){
+					    		location.href = "/board/update/[[${board_no}]]";
+					    	}else{
+					    		alert('비밀번호가 일치하지 않습니다.')
+					    	}
+					    },
+					    error: function(error) {
+					        console.error(error);
+					        alert('에러가 발생했습니다.');
+					    }
+					});
+				}
 			}
 			
 			function boardDeleteCheck(){
-				location.href="/boardDeleteCheck/[[${board.board_no}]]";
+				let password = $("#password").val();
+				
+				if(password == ''){
+					alert('비밀번호를 입력해주세요.')
+				}else{
+					let url = '/board/boardCheck?board_no=[[${board_no}]]&password='+password;
+
+					$.ajax({
+					    url: url,
+					    type: 'GET',
+					    success: function(data) {
+					    	if(data == 'success'){
+					    		alert('비밀번호 일치');
+					    		$.ajax({
+									url: '/board/deleteBoard/[[${board_no}]]',
+									type: 'DELETE',
+									data: data,
+									async : false,
+									success: function(data) {
+								    	//console.log(data);
+								        if(data == 'fail'){
+								        	alert('게시글 삭제를 실패했습니다. 잠시후 다시 시도해주세요.')
+								        }
+								    },
+								    error: function(error) {
+								        console.error(error);
+								        alert('에러가 발생했습니다.');
+								    }
+								});
+								
+								location.href="/board/list";
+					    	}else{
+					    		alert('비밀번호가 일치하지 않습니다.')
+					    	}
+					    },
+					    error: function(error) {
+					        console.error(error);
+					        alert('에러가 발생했습니다.');
+					    }
+					});
+				}
 			}
 		</script>
 	</th:block>
@@ -24,32 +86,48 @@
 	<body>
 		<th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
 		
-		<div layout:fragment="content" class="content">
-			<button type="button" onClick="location.href='/board'">목록</button>
+		<div layout:fragment="content" class="content"></div>
+		
+		<script type="text/javascript">
+			$.ajax({
+			    url: '/board/getDetail/[[${board_no}]]',
+			    type: 'GET',
+			    success: function(data) {
+			    	//console.log(data);
+			        $("#template").tmpl(data).appendTo(".content");
+			    },
+			    error: function(error) {
+			        console.error(error);
+			    }
+			});
+		</script>
+		<script id="template" type="text/x-jquery-tmpl">
+			<button type="button" onClick="location.href='../list'">목록</button>
+			<input type="password" id="password" placeholder="비밀번호 입력" style="width:100px;"/>
 			<button type="button" onClick="javascript:boardUpdateCheck()">수정</button>
 			<button type="button" onClick="javascript:boardDeleteCheck()">삭제</button>
 
 			<table>
 				<tr>
 					<th>제목</th>
-					<td th:text="${board.title}"></td>
+					<td>${title}</td>
 				</tr>
 				<tr>
 					<th>작성자</th>
-					<td th:text="${board.writer}"></td>
+					<td>${writer}</td>
 				</tr>
 				<tr>
 					<th>작성일</th>
-					<td th:text="${board.date}"></td>
+					<td>${date}</td>
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td th:text="${board.content}"></td>
+					<td>${content}</td>
 				</tr>
 			</table>
-			<button type="button" onClick="location.href='/boardWrite'">글쓰기</button>
-		</div>
-		
+			<button type="button" onClick="location.href='/board/write'">글쓰기</button>
+		</script>
+
 		<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
 	</body>
 </html>
